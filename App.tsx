@@ -31,8 +31,9 @@ import {
 import { analyzeMistakeImage } from './lib/silicon';
 import { generateId } from './lib/uuid';
 
-if (typeof (global as any).Buffer === 'undefined') {
-  (global as any).Buffer = Buffer;
+const globalObject: any = typeof globalThis !== 'undefined' ? (globalThis as any) : {};
+if (typeof globalObject.Buffer === 'undefined') {
+  globalObject.Buffer = Buffer;
 }
 
 export type RootScreen = 'list' | 'analysis';
