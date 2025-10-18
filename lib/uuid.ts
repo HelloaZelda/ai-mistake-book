@@ -1,9 +1,12 @@
-// lib/uuid.ts
-export function randomUUID() {
-  // 简易UUID（足够做本地游客ID）
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-    const r = (Math.random() * 16) | 0,
-      v = c === 'x' ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
+const hasCrypto = typeof globalThis !== 'undefined' && typeof globalThis.crypto !== 'undefined';
+
+export function generateId(): string {
+  if (hasCrypto && 'randomUUID' in globalThis.crypto) {
+    return globalThis.crypto.randomUUID();
+  }
+
+  const random = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
+    .toString(36)
+    .padStart(10, '0');
+  return `id-${Date.now().toString(36)}-${random}`;
 }
